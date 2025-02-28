@@ -1,0 +1,98 @@
+class ATM:
+    def __init__(self, account_holder, pin, balance=0.0):
+        # Initializing the ATM machine with account holder name, pin, and balance.
+        self.account_holder = account_holder
+        self.pin = pin
+        self.balance = balance
+        self.transaction_history = []  # List to keep track of all transactions
+
+    def display_menu(self):
+        # Displaying the menu of available options to the user.
+        print("\n*** Welcome to ATM ***")
+        print("1. Account Balance Inquiry")
+        print("2. Cash Withdrawal")
+        print("3. Cash Deposit")
+        print("4. Change PIN")
+        print("5. Transaction History")
+        print("6. Exit")
+    
+    def authenticate(self):
+        # Authenticates the user by asking for the PIN.
+        user_pin = input("Please enter your PIN: ")
+        if user_pin == self.pin:
+            return True
+        else:
+            print("Incorrect PIN. Try again.")
+            return False
+
+    def account_balance_inquiry(self):
+        # Displays the current balance of the account.
+        print(f"Your current balance is: â¹{self.balance:.2f}")
+    
+    def cash_withdrawal(self):
+        # Allows the user to withdraw money from their account.
+        amount = float(input("Enter the amount to withdraw: â¹"))
+        if amount <= self.balance:
+            self.balance -= amount
+            self.transaction_history.append(f"Withdrawal: -â¹{amount:.2f}")
+            print(f"Successfully withdrew â¹{amount:.2f}. New balance is: â¹{self.balance:.2f}")
+        else:
+            print("Insufficient funds.")
+
+    def cash_deposit(self):
+        # Allows the user to deposit money into their account.
+        amount = float(input("Enter the amount to deposit: â¹"))
+        self.balance += amount
+        self.transaction_history.append(f"Deposit: +â¹{amount:.2f}")
+        print(f"Successfully deposited â¹{amount:.2f}. New balance is: â¹{self.balance:.2f}")
+
+    def change_pin(self):
+        # Allows the user to change their PIN after confirming with the old PIN.
+        old_pin = input("Enter your old PIN: ")
+        if old_pin == self.pin:
+            new_pin = input("Enter your new PIN: ")
+            self.pin = new_pin
+            print("Your PIN has been successfully changed.")
+        else:
+            print("Incorrect old PIN. PIN change failed.")
+    
+    def transaction_history_inquiry(self):
+        # Displays the list of all transactions.
+        if not self.transaction_history:
+            print("No transaction history available.")
+        else:
+            print("\nTransaction History:")
+            for transaction in self.transaction_history:
+                print(transaction)
+
+def main():
+    # Main function that simulates the ATM operations
+    atm = ATM(account_holder="John Doe", pin="1234", balance=1000.0)  # Initializing ATM with user details
+
+    # ATM simulation loop
+    while True:
+        atm.display_menu()  # Show options to the user
+        choice = input("Select an option (1-6): ")
+        
+        # Authenticating the user before allowing any transaction
+        if not atm.authenticate():
+            continue
+        
+        if choice == '1':
+            atm.account_balance_inquiry()  # Account balance inquiry
+        elif choice == '2':
+            atm.cash_withdrawal()  # Cash withdrawal
+        elif choice == '3':
+            atm.cash_deposit()  # Cash deposit
+        elif choice == '4':
+            atm.change_pin()  # Change PIN
+        elif choice == '5':
+            atm.transaction_history_inquiry()  # Transaction history inquiry
+        elif choice == '6':
+            print("Thank you for using the ATM. Goodbye!")  # Exit the program
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
